@@ -43,5 +43,9 @@ This is a vagrant box that represents the basis that all immerda boxes are built
     SSH_AUTH_SOCK='' vagrant ssh
     /etc/puppet/ibox/bin/local_apply.sh
 
+## Tuning your deployment
 
+The Vagrant file uses a simple yaml file: `boxes.yaml` to describe the boxes that should be created. You can use it to tweak the various options for a deployment, like an additional node, additional disk, cpu & memory. See `boxes.yaml.sample` for the various options you can tweak.
+
+By default - if boxes.yaml is missing - only one box is started using all the defaults.
 

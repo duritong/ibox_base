@@ -1,0 +1,14 @@
+'ibox-one': {}
+#'ibox-two':
+#  cpus: 1
+#  memory: 1024
+#  disk2size: 1096
+#  hostonly_networks:
+#    - "192.168.252.2"
+#    - "192.168.55.12"
+#'ibox-three':
+#  cpus: 1
+#  memory: 1024
+#  disk2size: 1096
+#  os: 'centos6'
+#  gui: true
