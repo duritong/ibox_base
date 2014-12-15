@@ -24,8 +24,6 @@ Vagrant.configure("2") do |config|
       vmconfig.hostmanager.aliases = name
 
       vmconfig.vm.synced_folder '.', '/vagrant', disabled: true
-      vmconfig.vm.synced_folder "manifests/", "/etc/puppet/ibox",
-        type: 'rsync', rsync__exclude: ".git/"
       vmconfig.ssh.username = 'root'
       vmconfig.ssh.password = opts['root_password']
 
@@ -47,11 +45,16 @@ Vagrant.configure("2") do |config|
             '--port', 1, '--device', 1, '--type', 'hdd', '--medium', data_disk]
         end
 
-        opts['private_networks'].each do |ho_net_ip|
-          override.vm.network "private_network", ip: ho_net_ip, virtualbox__intnet: true
+        opts['private_networks'].each_with_index do |ho_net_ip,i|
+          override.vm.network "private_network", ip: ho_net_ip, virtualbox__intnet: true, intnet: "intnet#{i}"
         end
+        override.vm.synced_folder "manifests/", "/etc/puppet/ibox"
 
         v.gui = opts['gui']
+      end
+      vmconfig.vm.provider :libvirt do |v,override|
+        override.vm.synced_folder "manifests/", "/etc/puppet/ibox",
+          type: 'rsync', rsync__exclude: ".git/"
       end
     end
   end
