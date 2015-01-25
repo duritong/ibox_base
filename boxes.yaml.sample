@@ -1,8 +1,9 @@
-'ibox-one': {}
+'ibox-one':
+  disk2size: 10240
 #'ibox-two':
 #  cpus: 1
 #  memory: 1024
-#  disk2size: 1096
+#  disk2size: 1024
 #  hostonly_networks:
 #    - "192.168.252.2"
 #    - "192.168.55.12"

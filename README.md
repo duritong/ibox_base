@@ -15,7 +15,7 @@ This is a vagrant box that represents the basis that all immerda boxes are built
 
 ## Setup
 
-* Vagrant with kvm support. At the moment we relay on kvm support, other virtualization technologies might be supported in the future.
+* Vagrant with virtualbox support. At the moment we relay on virtualbox support, as it's the easiest way to go with more advanced boxes (multiple nics, disks). But basic kvm support is available as well and you should always be able to run a base box with it.
 * Import the stemcell that is used to start as a basis
 
     # For virtualbox
@@ -37,15 +37,28 @@ This is a vagrant box that represents the basis that all immerda boxes are built
     SSH_AUTH_SOCK='' vagrant up --provider=libvirt
     # or
     SSH_AUTH_SOCK='' vagrant up --provider=virtualbox
+    # this will automatically apply the basic configuration (ibox standard)
 
-* ssh to the box and apply the puppet manifests
+* Rerun puppet provisioning
+
+    # if you made changes and want to apply them, simply run another provision
+    SSH_AUTH_SOCK='' vagrant provision
+
+* You can also ssh into the box and run it from there
 
     SSH_AUTH_SOCK='' vagrant ssh
     /etc/puppet/ibox/bin/local_apply.sh
+
+* Root password: vagrant
 
 ## Tuning your deployment
 
 The Vagrant file uses a simple yaml file: `boxes.yaml` to describe the boxes that should be created. You can use it to tweak the various options for a deployment, like an additional node, additional disk, cpu & memory. See `boxes.yaml.sample` for the various options you can tweak.
 
-By default - if boxes.yaml is missing - only one box is started using all the defaults.
+By default - if boxes.yaml is missing - only one box is started using all the defaults. Meaning (on virtualbox):
 
+* a box called ibox-one
+* 1 cpu
+* 1G of memory
+* one interface
+* one additional disk of 10GB

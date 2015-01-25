@@ -4,9 +4,7 @@
 if File.exists?('boxes.yaml')
   boxes = YAML.load_file('boxes.yaml')
 else
-  boxes = {
-    'ibox-one' => {}
-  }
+  boxes = YAML.load_file('boxes.yaml.sample')
 end
 options = {
   'root_password'     => 'vagrant',
