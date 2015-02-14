@@ -1,10 +1,11 @@
 # -*- mode: ruby -*-
 # vi: set ft=ruby :
 
-if File.exists?('boxes.yaml')
-  boxes = YAML.load_file('boxes.yaml')
+base_dir = File.dirname(File.expand_path(__FILE__))
+if File.exists?(b=File.join(base_dir,'boxes.yaml'))
+  boxes = YAML.load_file(b)
 else
-  boxes = YAML.load_file('boxes.yaml.sample')
+  boxes = YAML.load_file(File.join(base_dir,'boxes.yaml.sample'))
 end
 options = {
   'root_password'     => 'vagrant',
@@ -36,7 +37,7 @@ Vagrant.configure("2") do |config|
 
         # Add second disk for data/swap LVM volume
         if opts['disk2size']
-          data_disk = "./.vagrant/disk/#{name}_disk.vdi"
+          data_disk = File.join(base_dir,".vagrant/disk/#{name}_disk.vdi")
           v.customize ['createhd', '--filename', data_disk, '--size',
             opts['disk2size']]
           v.customize ['storageattach', :id, '--storagectl', 'IDE Controller',
