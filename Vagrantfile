@@ -1,6 +1,9 @@
 # -*- mode: ruby -*-
 # vi: set ft=ruby :
 
+
+require 'yaml'
+
 base_dir = File.dirname(File.expand_path(__FILE__))
 if File.exists?(b=File.join(base_dir,'boxes.yaml'))
   boxes = YAML.load_file(b)
@@ -39,13 +42,16 @@ Vagrant.configure("2") do |config|
         if opts['disk2size']
           data_disk = File.join(base_dir,".vagrant/disk/#{name}_disk.vdi")
           v.customize ['createhd', '--filename', data_disk, '--size',
-            opts['disk2size']]
+            opts['disk2size']] unless File.exists?(data_disk)
           v.customize ['storageattach', :id, '--storagectl', 'IDE Controller',
             '--port', 1, '--device', 1, '--type', 'hdd', '--medium', data_disk]
         end
 
         opts['private_networks'].each_with_index do |ho_net_ip,i|
           override.vm.network "private_network", ip: ho_net_ip, virtualbox__intnet: true, intnet: "intnet#{i}"
+        end
+        opts['ports'].each do |g,h|
+          config.vm.network "forwarded_port", guest: g, host: h
         end
         override.vm.synced_folder "manifests/", "/etc/puppet/ibox"
 
